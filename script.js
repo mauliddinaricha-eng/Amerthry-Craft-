@@ -1,69 +1,58 @@
 const productsData = [
     {
         id: 1,
-        title: "Lavender Dream Big Bouquet",
-        category: "crochet",
-        price: 135000,
-        priceTag: "135K ♡",
-        desc: "Plush crochet purple roses, lavender stems & soft cream wrapper ribbon.",
-        badge: "Best Seller",
-        wrapper: "Lavender & Cream",
+        title: "Big Size",
+        category: "big",
+        price: 120000,
+        priceTag: "Start 120K ♡",
+        desc: "Buket ukuran besar yang dibuat sesuai request dan pilihan desainmu.",
+        badge: "Big Size",
+        wrapper: "Custom",
         svgType: "big-lavender"
     },
     {
         id: 2,
-        title: "Lilac Tulip Elegance",
-        category: "pipecleaner",
-        price: 75000,
-        priceTag: "75K ♡",
-        desc: "5 Soft pipe cleaner tulips in pastel lilac & sage leaves.",
-        badge: "Popular",
-        wrapper: "Soft Lilac Paper",
+        title: "Medium Size",
+        category: "medium",
+        price: 35000,
+        priceTag: "Start 35K ♡",
+        desc: "Buket ukuran medium yang dibuat berdasarkan request pelanggan.",
+        badge: "Medium Size",
+        wrapper: "Custom",
         svgType: "tulip-set"
     },
     {
         id: 3,
-        title: "Single Lavender Stem",
-        category: "singlestem",
-        price: 25000,
-        priceTag: "25K ♡",
-        desc: "Handcrafted single lavender stem in mini paper sleeve.",
-        badge: "Cute Gift",
-        wrapper: "Ivory Paper",
+        title: "Single Size",
+        category: "single",
+        price: 15000,
+        priceTag: "Start 15K ♡",
+        desc: "Satu tangkai atau satu buket kecil yang dibuat sesuai request.",
+        badge: "Single Size",
+        wrapper: "Custom",
         svgType: "single-stem"
     },
     {
         id: 4,
-        title: "Enchanted Bloom Box",
-        category: "giftset",
-        price: 165000,
-        priceTag: "165K ♡",
-        desc: "Arranged bouquet in pastel box with LED fairy lights & free card.",
-        badge: "Gift Box",
-        wrapper: "Pastel Lavender Box",
+        title: "Love Board",
+        category: "loveboard",
+        price: 35000,
+        priceTag: "Start 35K ♡",
+        desc: "Love board custom untuk hadiah spesial dan momen berkesan.",
+        badge: "Love Board",
+        wrapper: "Custom",
         svgType: "gift-box"
     },
     {
         id: 5,
-        title: "Crochet Daisy & Rose Bouquet",
-        category: "crochet",
-        price: 95000,
-        priceTag: "95K ♡",
-        desc: "Cheerful combination of white crochet daisies and lavender roses.",
-        badge: "New",
-        wrapper: "Sage & Cream",
+        title: "Custom Request",
+        category: "custom",
+        price: 0,
+        priceTag: "By Request ♡",
+        desc: "Buat buket sesuai ukuran, warna, bentuk, dan konsep yang kamu inginkan.",
+        badge: "Custom",
+        wrapper: "By Request",
         svgType: "daisy-rose"
-    },
-    {
-        id: 6,
-        title: "Mini Pocket Bouquet Trio",
-        category: "singlestem",
-        price: 45000,
-        priceTag: "45K ♡",
-        desc: "Set of 3 mini handmade bouquets perfect for room decoration.",
-        badge: "Value Set",
-        wrapper: "Kraft & Lavender",
-        svgType: "mini-trio"
     }
 ];
 
@@ -165,9 +154,9 @@ document.querySelectorAll('#category-filters .filter-btn').forEach(btn => {
 });
 
 let customState = {
-    flowerName: "Crochet Lavender Roses",
-    price: 85000,
-    wrapper: "Lavender + Cream Paper",
+    flowerName: "Custom Request",
+    price: 0,
+    wrapper: "Kawat Bulu",
     note: ""
 };
 
