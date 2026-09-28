@@ -1,57 +1,62 @@
 const productsData = [
     {
         id: 1,
-        title: "Big Size",
+        title: "Big Size Bouquet",
         category: "big",
         price: 120000,
         priceTag: "Start 120K ♡",
-        desc: "Buket ukuran besar yang dibuat sesuai request dan pilihan desainmu.",
-        badge: "Big Size",
-        wrapper: "Custom",
+        priceLabel: "Starting from Rp120.000",
+        desc: "A statement-sized custom bouquet made with 10 large flowers, 2 small flower clusters, 1 leaf, and your choice of wrapping.",
+        badge: "Best Seller",
+        wrapper: "Custom Wrapping",
         svgType: "big-lavender"
     },
     {
         id: 2,
-        title: "Medium Size",
+        title: "Medium Size Bouquet",
         category: "medium",
         price: 35000,
         priceTag: "Start 35K ♡",
-        desc: "Buket ukuran medium yang dibuat berdasarkan request pelanggan.",
-        badge: "Medium Size",
-        wrapper: "Custom",
+        priceLabel: "Starting from Rp35.000",
+        desc: "A sweet and balanced custom bouquet with 2 large flowers, 2 small flower clusters, 1 leaf, and your choice of wrapping.",
+        badge: "Popular",
+        wrapper: "Custom Wrapping",
         svgType: "tulip-set"
     },
     {
         id: 3,
-        title: "Single Size",
+        title: "Single Size Bouquet",
         category: "single",
         price: 15000,
         priceTag: "Start 15K ♡",
-        desc: "Satu tangkai atau satu buket kecil yang dibuat sesuai request.",
-        badge: "Single Size",
-        wrapper: "Custom",
+        priceLabel: "Starting from Rp15.000",
+        desc: "A simple custom single-flower bouquet with your preferred wrapping style and paper color.",
+        badge: "Sweet & Simple",
+        wrapper: "Custom Wrapping",
         svgType: "single-stem"
     },
     {
         id: 4,
-        title: "Love Board",
+        title: "Love Board Bouquet",
         category: "loveboard",
         price: 35000,
         priceTag: "Start 35K ♡",
-        desc: "Love board custom untuk hadiah spesial dan momen berkesan.",
-        badge: "Love Board",
-        wrapper: "Custom",
+        priceLabel: "Starting from Rp35.000",
+        desc: "A personalized gift combination featuring 1 Love Board and 1 Single Bouquet.",
+        badge: "Special Gift",
+        wrapper: "Custom Wrapping",
         svgType: "gift-box"
     },
     {
         id: 5,
-        title: "Custom Request",
+        title: "Custom Bouquet",
         category: "custom",
-        price: 0,
+        price: null,
         priceTag: "By Request ♡",
-        desc: "Buat buket sesuai ukuran, warna, bentuk, dan konsep yang kamu inginkan.",
-        badge: "Custom",
-        wrapper: "By Request",
+        priceLabel: "Price Based on Request",
+        desc: "A fully personalized bouquet combining custom items, snacks, gifts, or other elements based on your request.",
+        badge: "Made by Request",
+        wrapper: "Custom",
         svgType: "daisy-rose"
     }
 ];
@@ -126,7 +131,7 @@ function renderProducts(filter = 'all') {
             <div class="mt-4 pt-3 border-t border-dashed border-lavender-soft flex items-center justify-between">
                 <div>
                     <span class="text-[10px] text-sage-dark font-semibold block">Price</span>
-                    <span class="font-display font-bold text-base text-lavender-deep">Rp ${p.price.toLocaleString('id-ID')}</span>
+                    <span class="font-display font-bold text-base text-lavender-deep">${p.priceLabel}</span>
                 </div>
                 <a href="https://wa.me/628123456789?text=Halo%20Amerthry%20Craft!%20Saya%20mau%20order%20buket%20${encodeURIComponent(p.title)}%20(${p.priceTag})%20♡" target="_blank" class="bg-lavender-light hover:bg-lavender-dusty text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-colors shadow-2xs flex items-center gap-1.5">
                     <i class="fa-brands fa-whatsapp text-sm"></i>
@@ -154,63 +159,392 @@ document.querySelectorAll('#category-filters .filter-btn').forEach(btn => {
 });
 
 let customState = {
-    flowerName: "Custom Request",
-    price: 0,
-    wrapper: "Kawat Bulu",
+    size: "big",
+    title: "Build Your Custom Big Size Bouquet",
+    price: 120000,
+    priceLabel: "Starting from Rp120.000",
+    flowerElements: [],
+    wrappingStyle: "",
+    wrappingColor: "",
     note: ""
 };
+const customizerData = {
+    big: {
+        title: "Build Your Custom Big Size Bouquet",
+        previewTitle: "Big Size Bouquet",
+        price: 120000,
+        priceLabel: "Starting from Rp120.000",
 
-const flowerBtnGroup = document.querySelectorAll('#custom-flower-options .custom-option');
-flowerBtnGroup.forEach(btn => {
-    btn.addEventListener('click', () => {
-        flowerBtnGroup.forEach(b => {
-            b.classList.remove('active', 'border-lavender-dusty', 'bg-lavender-pale');
-            b.classList.add('border-lavender-soft', 'bg-white');
-        });
-        btn.classList.add('active', 'border-lavender-dusty', 'bg-lavender-pale');
-        btn.classList.remove('border-lavender-soft', 'bg-white');
+        elements: [
+            "10 pcs Large Flowers",
+            "2 pcs Small Flower Clusters",
+            "1 pc Leaf"
+        ],
 
-        customState.flowerName = btn.querySelector('.font-bold').innerText;
-        customState.price = parseInt(btn.getAttribute('data-price'));
-        updateCustomizerPreview();
+        description:
+            "A statement-sized bouquet designed for special moments, with plenty of room to personalize your flower colors and wrapping."
+    },
+
+    medium: {
+        title: "Build Your Custom Medium Size Bouquet",
+        previewTitle: "Medium Size Bouquet",
+        price: 35000,
+        priceLabel: "Starting from Rp35.000",
+
+        elements: [
+            "2 pcs Large Flowers",
+            "2 pcs Small Flower Clusters",
+            "1 pc Leaf"
+        ],
+
+        description:
+            "A balanced and charming bouquet for everyday gifting, celebrations, and special moments."
+    },
+
+    single: {
+        title: "Build Your Custom Single Size Bouquet",
+        previewTitle: "Single Size Bouquet",
+        price: 15000,
+        priceLabel: "Starting from Rp15.000",
+
+        elements: [
+            "1 pc Large Flower"
+        ],
+
+        description:
+            "A simple yet meaningful single-flower bouquet with your choice of wrapping style and paper color."
+    },
+
+    loveboard: {
+        title: "Build Your Custom Love Board Bouquet",
+        previewTitle: "Love Board Bouquet",
+        price: 35000,
+        priceLabel: "Starting from Rp35.000",
+
+        elements: [
+            "1 pc Love Board",
+            "1 pc Single Bouquet"
+        ],
+
+        description:
+            "A personalized gift combining a Love Board and Single Bouquet, perfect for expressing a special message."
+    },
+
+    custom: {
+        title: "Build Your Custom Bouquet",
+        previewTitle: "Custom Bouquet",
+        price: null,
+        priceLabel: "Price Based on Request",
+
+        elements: [
+            "Custom Items",
+            "Snacks",
+            "Personal Gifts",
+            "Other Requested Items"
+        ],
+
+        description:
+            "Tell us what you have in mind. We can create a personalized bouquet using snacks, gifts, custom items, or other elements based on your request."
+    }
+};
+function setCustomizerType(type) {
+    const data = customizerData[type];
+
+    if (!data) return;
+
+    customState.size = type;
+    customState.title = data.title;
+    customState.price = data.price;
+    customState.priceLabel = data.priceLabel;
+    customState.flowerElements = [...data.elements];
+    customState.wrappingStyle = "";
+    customState.wrappingColor = "";
+    customState.note = "";
+
+    // Customizer title
+    const customizerTitle = document.getElementById("customizer-title");
+
+    if (customizerTitle) {
+        customizerTitle.innerText = data.title;
+    }
+
+    // Preview title
+    const previewTitle = document.getElementById("preview-flower-name");
+
+    if (previewTitle) {
+        previewTitle.innerText = data.previewTitle;
+    }
+
+    // Preview price
+    const previewPrice = document.getElementById("preview-total-price");
+
+    if (previewPrice) {
+        previewPrice.innerText = data.priceLabel;
+    }
+
+    // Description
+    const customizerDescription =
+        document.getElementById("customizer-description");
+
+    if (customizerDescription) {
+        customizerDescription.innerText = data.description;
+    }
+
+    renderFlowerElements(data.elements);
+    renderWrappingOptions();
+
+    updateCustomizerPreview();
+}
+function renderFlowerElements(elements) {
+    const container = document.getElementById("custom-flower-options");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    elements.forEach((element, index) => {
+        const option = document.createElement("div");
+
+        option.className =
+            "custom-option border border-lavender-soft bg-white rounded-2xl p-4";
+
+        option.innerHTML = `
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-lavender-pale flex items-center justify-center">
+                    ✿
+                </div>
+
+                <div>
+                    <p class="font-bold text-lavender-deep">
+                        ${element}
+                    </p>
+
+                    <p class="text-xs text-lavender-dark/70 mt-1">
+                        Included in this bouquet size
+                    </p>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(option);
     });
-});
+}
+function renderWrappingOptions() {
+    const container = document.getElementById("custom-wrapper-options");
 
-const wrapperBtnGroup = document.querySelectorAll('#custom-wrapper-options .wrapper-option');
-wrapperBtnGroup.forEach(btn => {
-    btn.addEventListener('click', () => {
-        wrapperBtnGroup.forEach(b => {
-            b.classList.remove('active', 'border-lavender-dusty', 'bg-lavender-soft', 'text-lavender-deep');
-            b.classList.add('border-lavender-soft', 'bg-white', 'text-lavender-dark');
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="mb-5">
+            <h4 class="font-bold text-lavender-deep mb-3">
+                Choose Your Wrapping Style
+            </h4>
+
+            <div class="grid grid-cols-2 gap-3">
+                ${wrappingStyles.map(style => `
+                    <button
+                        type="button"
+                        class="wrapper-style-option border border-lavender-soft bg-white rounded-xl p-3 text-sm text-lavender-dark hover:border-lavender-dusty transition"
+                        data-style="${style}"
+                    >
+                        ${style}
+                    </button>
+                `).join("")}
+            </div>
+        </div>
+
+        <div>
+            <h4 class="font-bold text-lavender-deep mb-3">
+                Choose Your Paper Color
+            </h4>
+
+            <div class="grid grid-cols-3 gap-3">
+                ${wrappingColors.map(color => `
+                    <button
+                        type="button"
+                        class="wrapper-color-option border border-lavender-soft bg-white rounded-xl p-3 text-sm text-lavender-dark hover:border-lavender-dusty transition"
+                        data-color="${color}"
+                    >
+                        ${color}
+                    </button>
+                `).join("")}
+            </div>
+        </div>
+
+        <p class="text-xs text-lavender-dark/70 mt-4">
+            Choose the wrapping style and paper color that best match your bouquet.
+            Custom wrapping colors and styles are available by request.
+        </p>
+    `;
+
+    container
+        .querySelectorAll(".wrapper-style-option")
+        .forEach(button => {
+            button.addEventListener("click", () => {
+                container
+                    .querySelectorAll(".wrapper-style-option")
+                    .forEach(btn => {
+                        btn.classList.remove(
+                            "bg-lavender-pale",
+                            "border-lavender-dusty"
+                        );
+                    });
+
+                button.classList.add(
+                    "bg-lavender-pale",
+                    "border-lavender-dusty"
+                );
+
+                customState.wrappingStyle =
+                    button.getAttribute("data-style");
+
+                updateCustomizerPreview();
+            });
         });
-        btn.classList.add('active', 'border-lavender-dusty', 'bg-lavender-soft', 'text-lavender-deep');
-        btn.classList.remove('border-lavender-soft', 'bg-white', 'text-lavender-dark');
 
-        customState.wrapper = btn.getAttribute('data-wrapper');
-        updateCustomizerPreview();
-    });
-});
+    container
+        .querySelectorAll(".wrapper-color-option")
+        .forEach(button => {
+            button.addEventListener("click", () => {
+                container
+                    .querySelectorAll(".wrapper-color-option")
+                    .forEach(btn => {
+                        btn.classList.remove(
+                            "bg-lavender-pale",
+                            "border-lavender-dusty"
+                        );
+                    });
+
+                button.classList.add(
+                    "bg-lavender-pale",
+                    "border-lavender-dusty"
+                );
+
+                customState.wrappingColor =
+                    button.getAttribute("data-color");
+
+                updateCustomizerPreview();
+            });
+        });
+}
+const wrappingStyles = [
+    "Classic Wrap",
+    "Layered Wrap",
+    "Cone Wrap",
+    "Gift Wrap",
+    "Custom Style"
+];
+
+const wrappingColors = [
+    "Cream",
+    "White",
+    "Lavender",
+    "Soft Pink",
+    "Sage Green",
+    "Custom Color"
+];
 
 const customNoteInput = document.getElementById('custom-note');
-customNoteInput.addEventListener('input', (e) => {
-    customState.note = e.target.value;
-    updateCustomizerPreview();
-});
 
-function updateCustomizerPreview() {
-    document.getElementById('preview-flower-name').innerText = customState.flowerName;
-    document.getElementById('preview-wrapper-name').innerText = `Wrapper: ${customState.wrapper}`;
-    document.getElementById('preview-total-price').innerText = `Rp ${customState.price.toLocaleString('id-ID')}`;
-    
-    const noteText = customState.note.trim() ? `"${customState.note.trim()}"` : `"Your message will appear here... ♡"`;
-    document.getElementById('preview-note-text').innerText = noteText;
+if (customNoteInput) {
+    customNoteInput.addEventListener('input', (e) => {
+        customState.note = e.target.value;
+        updateCustomizerPreview();
+    });
 }
+function updateCustomizerPreview() {
+    const data = customizerData[customState.size];
 
-// Send Custom Order WhatsApp Link
-document.getElementById('send-custom-wa').addEventListener('click', () => {
-    const message = `Halo Amerthry Craft! 💜%0ASaya mau order Custom Bouquet:%0A- *Bunga:* ${customState.flowerName}%0A- *Wrapper:* ${customState.wrapper}%0A- *Pesan Kartu:* "${customState.note || '-'}"%0A- *Total Price:* Rp ${customState.price.toLocaleString('id-ID')}%0A%0AMohon diproses ya, terima kasih! ♡`;
-    window.open(`https://wa.me/628123456789?text=${message}`, '_blank');
-});
+    const previewFlowerName =
+        document.getElementById("preview-flower-name");
+
+    const previewWrapperName =
+        document.getElementById("preview-wrapper-name");
+
+    const previewPrice =
+        document.getElementById("preview-total-price");
+
+    const previewNote =
+        document.getElementById("preview-note-text");
+
+    if (previewFlowerName) {
+        previewFlowerName.innerText = data.previewTitle;
+    }
+
+    if (previewWrapperName) {
+        let wrappingText = "Custom Wrapping";
+
+        if (
+            customState.wrappingStyle &&
+            customState.wrappingColor
+        ) {
+            wrappingText =
+                `${customState.wrappingStyle} • ${customState.wrappingColor}`;
+        } else if (customState.wrappingStyle) {
+            wrappingText = customState.wrappingStyle;
+        } else if (customState.wrappingColor) {
+            wrappingText = customState.wrappingColor;
+        }
+
+        previewWrapperName.innerText =
+            `Wrapping: ${wrappingText}`;
+    }
+
+    if (previewPrice) {
+        previewPrice.innerText = data.priceLabel;
+    }
+
+    if (previewNote) {
+        previewNote.innerText =
+            customState.note.trim()
+                ? `"${customState.note.trim()}"`
+                : `"Your special request will appear here... ♡"`;
+    }
+}
+document.getElementById("send-custom-wa")
+    ?.addEventListener("click", () => {
+
+        const data = customizerData[customState.size];
+
+        const elements =
+            customState.flowerElements.length
+                ? customState.flowerElements.join(", ")
+                : "-";
+
+        const price =
+            customState.price
+                ? `Rp ${customState.price.toLocaleString("id-ID")}`
+                : "Price Based on Request";
+
+        const message = `
+Halo Amerthry Craft! 💜
+
+Saya mau order:
+*${data.previewTitle}*
+
+*Flower Elements:*
+${elements}
+
+*Wrapping Style:*
+${customState.wrappingStyle || "-"}
+
+*Paper Color:*
+${customState.wrappingColor || "-"}
+
+*Special Request:*
+${customState.note || "-"}
+
+*Estimated Price:*
+${price}
+
+Mohon dibantu untuk proses dan konfirmasi detail request saya ya. Terima kasih! ♡
+        `.trim();
+
+        window.open(
+            `https://wa.me/628123456789?text=${encodeURIComponent(message)}`,
+            "_blank"
+        );
+    });
 
 document.querySelectorAll('.faq-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -221,80 +555,117 @@ document.querySelectorAll('.faq-toggle').forEach(btn => {
     });
 });
 
-document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-    document.getElementById('mobile-menu').classList.toggle('hidden');
-});
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+
+if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+}
 
 const canvas = document.getElementById('trail-canvas');
-const ctx = canvas.getContext('2d');
-let flowers = [];
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let flowers = [];
 
-window.addEventListener('mousemove', (e) => {
-    if (Math.random() < 0.2) {
-        flowers.push({
-            x: e.clientX,
-            y: e.clientY,
-            size: Math.random() * 12 + 8,
-            color: Math.random() > 0.5 ? '#D8C7F3' : '#C5B0EC',
-            alpha: 1,
-            vy: Math.random() * -1 - 0.5,
-            vx: (Math.random() - 0.5) * 1.5,
-            rotation: Math.random() * 360
-        });
-    }
-});
-
-function drawFlower(ctx, x, y, size, color, alpha, rotation) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate((rotation * Math.PI) / 180);
-    ctx.globalAlpha = alpha;
-    ctx.fillStyle = color;
-
-    // Draw 5 flower petals
-    for (let i = 0; i < 5; i++) {
-        ctx.beginPath();
-        ctx.rotate((72 * Math.PI) / 180);
-        ctx.ellipse(0, size / 2, size / 4, size / 2, 0, 0, Math.PI * 2);
-        ctx.fill();
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
 
-    // Center circle
-    ctx.beginPath();
-    ctx.arc(0, 0, size / 3, 0, Math.PI * 2);
-    ctx.fillStyle = '#FFFDF7';
-    ctx.fill();
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-    ctx.restore();
-}
-
-function animateTrail() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = flowers.length - 1; i >= 0; i--) {
-        const f = flowers[i];
-        f.x += f.vx;
-        f.y += f.vy;
-        f.alpha -= 0.015;
-        f.rotation += 1;
-
-        drawFlower(ctx, f.x, f.y, f.size, f.color, f.alpha, f.rotation);
-
-        if (f.alpha <= 0) {
-            flowers.splice(i, 1);
+    window.addEventListener('mousemove', (e) => {
+        if (Math.random() < 0.2) {
+            flowers.push({
+                x: e.clientX,
+                y: e.clientY,
+                size: Math.random() * 12 + 8,
+                color: Math.random() > 0.5
+                    ? '#D8C7F3'
+                    : '#C5B0EC',
+                alpha: 1,
+                vy: Math.random() * -1 - 0.5,
+                vx: (Math.random() - 0.5) * 1.5,
+                rotation: Math.random() * 360
+            });
         }
+    });
+
+    function drawFlower(ctx, x, y, size, color, alpha, rotation) {
+        ctx.save();
+
+        ctx.translate(x, y);
+        ctx.rotate((rotation * Math.PI) / 180);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = color;
+
+        for (let i = 0; i < 5; i++) {
+            ctx.beginPath();
+            ctx.rotate((72 * Math.PI) / 180);
+
+            ctx.ellipse(
+                0,
+                size / 2,
+                size / 4,
+                size / 2,
+                0,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(0, 0, size / 3, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFFDF7';
+        ctx.fill();
+
+        ctx.restore();
     }
-    requestAnimationFrame(animateTrail);
+
+    function animateTrail() {
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        for (let i = flowers.length - 1; i >= 0; i--) {
+            const f = flowers[i];
+
+            f.x += f.vx;
+            f.y += f.vy;
+            f.alpha -= 0.015;
+            f.rotation += 1;
+
+            drawFlower(
+                ctx,
+                f.x,
+                f.y,
+                f.size,
+                f.color,
+                f.alpha,
+                f.rotation
+            );
+
+            if (f.alpha <= 0) {
+                flowers.splice(i, 1);
+            }
+        }
+
+        requestAnimationFrame(animateTrail);
+    }
+
+    animateTrail();
 }
 
 // Initial Load
 window.onload = function() {
     renderProducts('all');
-    animateTrail();
 };
