@@ -605,7 +605,7 @@ Mohon dibantu untuk proses dan konfirmasi detail request saya ya. Terima kasih! 
         `.trim();
 
         window.open(
-            `https://wa.me/628123456789?text=${encodeURIComponent(message)}`,
+            `https://wa.me/6285766500905?text=${encodeURIComponent(message)}`,
             "_blank"
         );
     });
