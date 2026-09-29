@@ -1,0 +1,279 @@
+/* Base styles & paper texture simulation */
+body {
+    background-color: #F6F2FC;
+    color: #4A3B59;
+    font-family: 'Quicksand', sans-serif;
+    background-image: radial-gradient(#E2D8F5 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    overflow-x: hidden;
+}
+
+/* Wasi Tape & Sticker Elements */
+.washi-tape {
+    background: rgba(229, 217, 248, 0.75);
+    backdrop-filter: blur(2px);
+    border-left: 2px dashed rgba(158, 140, 194, 0.4);
+    border-right: 2px dashed rgba(158, 140, 194, 0.4);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.washi-tape-cream {
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(2px);
+    border-left: 2px dashed rgba(180, 170, 150, 0.4);
+    border-right: 2px dashed rgba(180, 170, 150, 0.4);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Paper Scalloped Edges */
+.scalloped-bottom {
+    background-image: radial-gradient(circle at 10px -5px, transparent 12px, #FFFDF7 13px);
+    background-size: 20px 20px;
+    background-repeat: repeat-x;
+}
+
+.scalloped-top {
+    background-image: radial-gradient(circle at 10px 15px, transparent 12px, #FFFDF7 13px);
+    background-size: 20px 20px;
+    background-repeat: repeat-x;
+}
+
+/* Torn Paper Border Effect */
+.torn-paper {
+    box-shadow: 0 10px 25px -5px rgba(74, 59, 89, 0.08), 0 8px 10px -6px rgba(74, 59, 89, 0.05);
+    position: relative;
+}
+
+/* Floating Doodles Keyframes */
+@keyframes gentleFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(3deg); }
+}
+
+@keyframes subtlePulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(197, 176, 236, 0.6); }
+    50% { transform: scale(1.03); box-shadow: 0 0 0 12px rgba(197, 176, 236, 0); }
+}
+
+@keyframes strokeDraw {
+    to { stroke-dashoffset: 0; }
+}
+
+.animate-float-slow {
+    animation: gentleFloat 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: gentleFloat 7s ease-in-out 2s infinite;
+}
+
+.pulse-lavender {
+    animation: subtlePulse 3s infinite;
+}
+
+/* Card Hover Scrapbook Lift */
+.scrapbook-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.scrapbook-card:hover {
+    transform: translateY(-8px) rotate(1deg) scale(1.01);
+    box-shadow: 0 20px 30px -10px rgba(74, 59, 89, 0.15);
+}
+
+.scrapbook-card:hover .sticker-price {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #F6F2FC;
+}
+::-webkit-scrollbar-thumb {
+    background: #C5B0EC;
+    border-radius: 20px;
+    border: 2px solid #F6F2FC;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #9E8CC2;
+}
+
+/* Floating Flower Canvas Container */
+#trail-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 40;
+}
+
+
+/* New customizer controls */
+.size-option,
+.wrapper-style-option,
+.wrapper-color-option {
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.size-option:hover,
+.wrapper-style-option:hover,
+.wrapper-color-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(74, 59, 89, 0.08);
+}
+
+#custom-flower-options .custom-option {
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+}
+
+#custom-wrapper-options {
+    background: rgba(246, 242, 252, 0.35);
+    border-radius: 1rem;
+    padding: 0.75rem;
+}
+
+#preview-total-price {
+    text-align: right;
+}
+
+@media (max-width: 640px) {
+    #category-filters .filter-btn {
+        flex: 1 1 calc(50% - 0.5rem);
+    }
+
+    #preview-total-price {
+        font-size: 1.15rem;
+    }
+}
+
+
+/* Pastel wrapping/color choices */
+.wrapper-style-option,
+.wrapper-color-option {
+    min-height: 48px;
+    cursor: pointer;
+    font-weight: 700;
+}
+.wrapper-style-option:hover,
+.wrapper-color-option:hover {
+    transform: translateY(-1px);
+}
+.wrapper-color-option[data-color="Pastel Lavender"] { background: #eee6fa; }
+.wrapper-color-option[data-color="Baby Pink"] { background: #fde5ee; }
+.wrapper-color-option[data-color="Baby Blue"] { background: #e2f0fb; }
+.wrapper-color-option[data-color="Mint Green"] { background: #e4f3e7; }
+.wrapper-color-option[data-color="Peach"] { background: #fde8d8; }
+.wrapper-color-option[data-color="Butter Yellow"] { background: #fff5c9; }
+.wrapper-color-option[data-color="Cream"] { background: #fffaf0; }
+.wrapper-color-option[data-color="Blush Pink"] { background: #f7d9e4; }
+
+@media (max-width: 640px) {
+    #custom-size-options {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* Custom Order type pages / detail tabs */
+.custom-type-tab {
+    min-height: 112px;
+    text-align: left;
+    padding: 1rem;
+    border: 2px solid #EBE3F8;
+    border-radius: 1.25rem;
+    background: #FFFDF7;
+    color: #4A3B59;
+    transition: all .2s ease;
+}
+.custom-type-tab:hover {
+    border-color: #C5B0EC;
+    transform: translateY(-2px);
+}
+.custom-type-tab.active {
+    background: #F6F2FC;
+    border-color: #9E8CC2;
+    box-shadow: 0 8px 20px rgba(74,59,89,.08);
+}
+.step-number {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    background: #EBE3F8;
+    color: #9E8CC2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    font-weight: 700;
+}
+.custom-photo-frame img {
+    transition: transform .35s ease;
+}
+.custom-photo-frame:hover img {
+    transform: scale(1.025);
+}
+.composition-item {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .85rem;
+    border: 1px solid #EBE3F8;
+    border-radius: 1rem;
+    background: #FFFDF7;
+}
+.composition-number {
+    flex: 0 0 2rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #F6F2FC;
+    color: #9E8CC2;
+    font-weight: 800;
+}
+.composition-item strong {
+    display: block;
+    color: #352745;
+    font-size: .9rem;
+}
+.composition-item small {
+    display: block;
+    color: #5C6C58;
+    font-size: .7rem;
+    margin-top: .15rem;
+}
+.photo-name-card {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    padding: .85rem;
+    border: 1px dashed #C5B0EC;
+    border-radius: 1rem;
+    background: #FAF6EE;
+    color: #4A3B59;
+    font-size: .8rem;
+}
+.photo-name-card span {
+    color: #5C6C58;
+    font-size: .7rem;
+}
+
+
+        /* Real bouquet photos in the Bouquets catalog */
+        #product-grid .bouquet-real-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
