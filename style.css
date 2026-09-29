@@ -1,0 +1,243 @@
+/* ==========================================================
+   Amerthry Craft — style.css
+   Pelengkap Tailwind CDN: kelas custom yang dipakai index.html
+   ========================================================== */
+
+:root {
+    --lav-pale: #F6F2FC;
+    --lav-soft: #EBE3F8;
+    --lav: #D8C7F3;
+    --lav-light: #C5B0EC;
+    --lav-dusty: #9E8CC2;
+    --lav-dark: #4A3B59;
+    --lav-deep: #352745;
+    --cream-paper: #FFFDF7;
+    --cream-ivory: #FAF6EE;
+    --sage: #8F9E8B;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--cream-ivory);
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(216, 199, 243, .35) 0, transparent 40%),
+        radial-gradient(circle at 85% 70%, rgba(196, 212, 189, .30) 0, transparent 38%),
+        radial-gradient(rgba(158, 140, 194, .18) 1.2px, transparent 1.2px);
+    background-size: auto, auto, 22px 22px;
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+/* Tailwind v3 tidak punya shadow-xs / shadow-2xs (dipakai di HTML) */
+.shadow-xs  { box-shadow: 0 1px 2px rgba(53, 39, 69, .08); }
+.shadow-2xs { box-shadow: 0 1px 1px rgba(53, 39, 69, .06); }
+
+/* ---------- Canvas jejak bunga ---------- */
+#trail-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 40;
+}
+
+/* ---------- Animasi melayang ---------- */
+@keyframes float-slow {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-14px) rotate(8deg); }
+}
+@keyframes float-delayed {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-18px) rotate(-10deg); }
+}
+.animate-float-slow    { animation: float-slow 6s ease-in-out infinite; }
+.animate-float-delayed { animation: float-delayed 7.5s ease-in-out 1.2s infinite; }
+
+/* ---------- Washi tape ---------- */
+.washi-tape,
+.washi-tape-cream {
+    box-shadow: 0 1px 3px rgba(53, 39, 69, .15);
+    opacity: .92;
+}
+.washi-tape {
+    background-color: rgba(216, 199, 243, .85);
+    background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, .45) 0 6px,
+        transparent 6px 12px
+    );
+    clip-path: polygon(0 8%, 3% 0, 6% 8%, 9% 0, 12% 8%, 15% 0, 18% 8%, 21% 0, 24% 8%, 27% 0, 30% 8%, 33% 0, 36% 8%, 39% 0, 42% 8%, 45% 0, 48% 8%, 51% 0, 54% 8%, 57% 0, 60% 8%, 63% 0, 66% 8%, 69% 0, 72% 8%, 75% 0, 78% 8%, 81% 0, 84% 8%, 87% 0, 90% 8%, 93% 0, 96% 8%, 100% 0, 100% 92%, 97% 100%, 94% 92%, 91% 100%, 88% 92%, 85% 100%, 82% 92%, 79% 100%, 76% 92%, 73% 100%, 70% 92%, 67% 100%, 64% 92%, 61% 100%, 58% 92%, 55% 100%, 52% 92%, 49% 100%, 46% 92%, 43% 100%, 40% 92%, 37% 100%, 34% 92%, 31% 100%, 28% 92%, 25% 100%, 22% 92%, 19% 100%, 16% 92%, 13% 100%, 10% 92%, 7% 100%, 4% 92%, 1% 100%, 0 92%);
+}
+.washi-tape-cream {
+    background-color: rgba(245, 239, 230, .95);
+    background-image: repeating-linear-gradient(
+        90deg,
+        rgba(158, 140, 194, .25) 0 3px,
+        transparent 3px 9px
+    );
+}
+
+/* ---------- Kertas sobek ---------- */
+.torn-paper {
+    background-image:
+        linear-gradient(180deg, rgba(246, 242, 252, .6), transparent 12%),
+        repeating-linear-gradient(0deg, transparent 0 27px, rgba(216, 199, 243, .18) 27px 28px);
+}
+
+/* ---------- Kartu produk (scrapbook) ---------- */
+.scrapbook-card {
+    transition: transform .35s ease, box-shadow .35s ease;
+}
+.scrapbook-card:hover {
+    transform: rotate(0deg) translateY(-6px) !important;
+    box-shadow: 0 14px 28px rgba(74, 59, 89, .18);
+}
+.scrapbook-card:hover .sticker-price { transform: rotate(-6deg) scale(1.08); }
+
+.sticker-price { transform: rotate(4deg); }
+
+.bouquet-real-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s ease;
+}
+.scrapbook-card:hover .bouquet-real-photo { transform: scale(1.06); }
+
+/* ---------- Tombol filter kategori ---------- */
+.filter-btn { cursor: pointer; }
+.filter-btn:hover { transform: translateY(-2px); }
+.filter-btn.active {
+    box-shadow: 0 4px 10px rgba(158, 140, 194, .4);
+}
+
+/* ---------- Tab tipe bouquet ---------- */
+.size-option {
+    background: #fff;
+    border: 2px solid var(--lav-soft);
+    border-radius: 1.25rem;
+    padding: .9rem .75rem;
+    text-align: center;
+    color: var(--lav-dark);
+    cursor: pointer;
+    transition: all .25s ease;
+}
+.size-option:hover {
+    border-color: var(--lav-dusty);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(158, 140, 194, .25);
+}
+.size-option.active {
+    background: var(--lav-pale);
+    border-color: var(--lav-dusty);
+    box-shadow: 0 6px 16px rgba(158, 140, 194, .35);
+}
+.custom-type-tab .font-bold { color: var(--lav-deep); }
+
+/* ---------- Foto detail custom ---------- */
+.custom-photo-frame img { transition: transform .5s ease; }
+.custom-photo-frame:hover img { transform: scale(1.04); }
+
+/* ---------- Isi bouquet ---------- */
+.composition-item {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    background: var(--lav-pale);
+    border: 1px solid var(--lav-soft);
+    border-radius: 1rem;
+    padding: .7rem .9rem;
+    font-size: .875rem;
+    font-weight: 600;
+    color: var(--lav-dark);
+}
+.composition-number {
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 9999px;
+    background: var(--lav-dusty);
+    color: #fff;
+    font-family: 'Sniglet', cursive;
+    font-size: .8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------- Nomor langkah ---------- */
+.step-number {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    background: var(--lav-light);
+    color: #fff;
+    font-family: 'Sniglet', cursive;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 3px var(--lav-soft);
+}
+
+/* ---------- Opsi bunga & wrapping ---------- */
+.custom-option {
+    transition: all .25s ease;
+}
+.custom-option:hover {
+    border-color: var(--lav-dusty);
+    box-shadow: 0 6px 14px rgba(158, 140, 194, .2);
+    transform: translateY(-2px);
+}
+
+.wrapper-style-option,
+.wrapper-color-option {
+    cursor: pointer;
+    text-align: center;
+    font-weight: 600;
+}
+.wrapper-style-option:hover,
+.wrapper-color-option:hover { transform: translateY(-2px); }
+
+/* ---------- Textarea ---------- */
+#custom-note { resize: vertical; }
+#custom-note::placeholder { color: var(--lav-dusty); opacity: .7; }
+
+/* ---------- FAQ ---------- */
+.faq-toggle { cursor: pointer; }
+.faq-toggle i { display: inline-block; }
+.faq-content { line-height: 1.7; }
+
+/* ---------- Tombol WhatsApp melayang ---------- */
+@keyframes pulse-lavender {
+    0%   { box-shadow: 0 0 0 0 rgba(158, 140, 194, .55); }
+    70%  { box-shadow: 0 0 0 16px rgba(158, 140, 194, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(158, 140, 194, 0); }
+}
+.pulse-lavender { animation: pulse-lavender 2.2s infinite; }
+#fixed-wa-btn { transition: transform .25s ease; }
+#fixed-wa-btn:hover { transform: scale(1.07) translateY(-2px); }
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--cream-ivory); }
+::-webkit-scrollbar-thumb {
+    background: var(--lav-light);
+    border-radius: 9999px;
+    border: 2px solid var(--cream-ivory);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--lav-dusty); }
+
+/* ---------- Aksesibilitas ---------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
