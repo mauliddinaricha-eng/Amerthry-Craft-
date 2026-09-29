@@ -136,7 +136,7 @@ function renderProducts(filter = 'all') {
                     <span class="text-[10px] text-sage-dark font-semibold block">Price</span>
                     <span class="font-display font-bold text-base text-lavender-deep">${p.priceLabel}</span>
                 </div>
-                <a href="https://wa.me/628123456789?text=Halo%20Amerthry%20Craft!%20Saya%20mau%20order%20buket%20${encodeURIComponent(p.title)}%20(${p.priceTag})%20♡" target="_blank" class="bg-lavender-light hover:bg-lavender-dusty text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-colors shadow-2xs flex items-center gap-1.5">
+                <a href="https://wa.me/6285766500905?text=Halo%20Amerthry%20Craft!%20Saya%20mau%20order%20buket%20${encodeURIComponent(p.title)}%20(${p.priceTag})%20♡" target="_blank" class="bg-lavender-light hover:bg-lavender-dusty text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-colors shadow-2xs flex items-center gap-1.5">
                     <i class="fa-brands fa-whatsapp text-sm"></i>
                     <span>Order</span>
                 </a>
