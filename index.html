@@ -39,8 +39,8 @@
                     },
                     fontFamily: {
                         script: ['Allura', 'Great Vibes', 'cursive'],
-                        hand: ['Patrick Hand', 'cursive'],
-                        display: ['Sniglet', 'Comfortaa', 'cursive'],
+                        hand: ['Rosemary', 'Patrick Hand', 'cursive'],
+                        display: ['Pritude Radiance', 'Sniglet', 'Comfortaa', 'cursive'],
                         sans: ['Quicksand', 'sans-serif']
                     }
                 }
@@ -54,6 +54,16 @@
     <!-- Inline stylesheet -->
     <style>
 /* Base styles & paper texture simulation */
+        @font-face {
+    font-family: 'Pritude Radiance';
+    src: url('fonts/pritude-radiance.otf') format('opentype');
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Rosemary';
+    src: url('fonts/rosemary.ttf') format('truetype');
+    font-display: swap;
+}
 body {
     background-color: #F6F2FC;
     color: #4A3B59;
@@ -436,6 +446,9 @@ body {
                 <button data-filter="loveboard" class="filter-btn bg-cream-paper text-lavender-dark hover:bg-lavender-pale border border-lavender-soft px-5 py-2 rounded-2xl font-bold text-sm transition-all">
                     Love Board 🎀
                 </button>
+                <button data-filter="custom" class="filter-btn bg-cream-paper text-lavender-dark hover:bg-lavender-pale border border-lavender-soft px-5 py-2 rounded-2xl font-bold text-sm transition-all">
+                    Custom Bouquet ✨
+                </button>
             </div>
 
             <!-- Product Scrapbook Grid Container -->
@@ -694,7 +707,7 @@ body {
     <script>
 const WA_NUMBER = "6285766500905";
 
-// Bouquet types pulled from the latest site structure (Big / Medium / Single / Love Board)
+// Bouquet types pulled from the latest site structure (Big / Medium / Single / Love Board/ Custom Bouquet)
 const bouquetTypes = [
     {
         id: "big",
@@ -715,8 +728,8 @@ const bouquetTypes = [
         title: "Medium Size Pipe Cleaner Flower Bouquet",
         desc: "Bouquet ukuran medium, pas untuk hadiah sehari-hari.",
         badge: "Popular",
-        startPrice: null,
-        priceLabel: "Hubungi untuk harga"
+        startPrice: 35000,
+        priceLabel: "Start from Rp 35.000"
     },
     {
         id: "single",
@@ -726,17 +739,28 @@ const bouquetTypes = [
         title: "Single Pipe Cleaner Flower Bouquet",
         desc: "Satu bunga besar, simpel dan tetap berkesan.",
         badge: "Simple & Sweet",
-        startPrice: null,
-        priceLabel: "Hubungi untuk harga"
+        startPrice: 15000,
+        priceLabel: "Start from Rp 15.000"
     },
     {
         id: "loveboard",
         name: "Love Board",
         icon: "🎀",
         composition: "1 love board + 1 single bouquet",
-        title: "Love Board + Single Bouquet",
+        title: "Love Board",
         desc: "Paket love board dipadukan dengan satu single bouquet.",
         badge: "Gift Set",
+        startPrice: 35000,
+        priceLabel: "Start from Rp 35.000"
+    },
+    {
+        id: "custom",
+        name: "Custom Bouquet",
+        icon: "✨",
+        composition: "Custom bouquet atau snack bouquet sesuai permintaan",
+        title: "Custom Bouquet / Snack Bouquet",
+        desc: "Bouquet sesuai keinginanmu, bisa berisi bunga atau snack. Chat kami untuk diskusi desain dan harga.",
+        badge: "Request",
         startPrice: null,
         priceLabel: "Hubungi untuk harga"
     }
