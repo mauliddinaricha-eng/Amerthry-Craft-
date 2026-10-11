@@ -944,7 +944,7 @@ function renderProducts(filter = 'all') {
 
                 <!-- Image / Graphic Illustration -->
                 <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-b from-lavender-pale/80 to-cream-ivory border border-lavender-soft flex items-center justify-center my-2">
-                    ${generateProductSVG()}
+                    ${p.image ? `<img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover">` : generateProductSVG()}
                 </div>
 
                 <!-- Content Info -->
