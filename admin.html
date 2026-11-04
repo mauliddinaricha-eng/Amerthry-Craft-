@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin • Amerthry Craft</title>
+  <style>
+    :root{--pale:#F6F2FC;--soft:#EBE3F8;--lav:#D8C7F3;--light:#C5B0EC;--dusty:#9E8CC2;--dark:#4A3B59;--deep:#352745;--paper:#FFFDF7;--bahaya:#b42318;--ok:#2f6b3a}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Quicksand',system-ui,sans-serif;background:var(--pale);color:var(--dark);line-height:1.5}
+    .sembunyi{display:none!important}
+    h1,h2,h3{color:var(--deep);margin:0}
+    input,textarea,select,button{font:inherit}
+    input[type=text],input[type=email],input[type=password],input[type=number],textarea,select{
+      width:100%;padding:.55rem .7rem;border:1.5px solid var(--soft);border-radius:10px;background:#fff;color:var(--deep)}
+    input[type=color]{width:64px;height:40px;padding:2px;border:1.5px solid var(--soft);border-radius:10px;background:#fff;cursor:pointer}
+    input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--light);outline-offset:1px}
+    label{display:block;font-size:.82rem;font-weight:600;margin:.7rem 0 .25rem}
+    .btn{background:var(--dusty);color:#fff;border:0;border-radius:10px;padding:.6rem 1.1rem;font-weight:700;cursor:pointer}
+    .btn:hover{filter:brightness(1.08)}
+    .btn:disabled{opacity:.6;cursor:wait}
+    .btn.garis{background:transparent;color:var(--dark);border:1.5px solid var(--light)}
+    .btn.bahaya{background:transparent;color:var(--bahaya);border:1.5px solid #efc2bd}
+
+    #login{min-height:100vh;display:grid;place-items:center;padding:1rem}
+    .kartu-login{width:100%;max-width:370px;background:var(--paper);border:2px solid var(--soft);border-radius:18px;padding:1.6rem}
+    .kartu-login h1{font-size:1.4rem;margin-bottom:.2rem}
+    .pesan{min-height:1.3em;font-size:.85rem;color:var(--bahaya);margin:.6rem 0 0}
+
+    .atas{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;
+      background:var(--paper);border-bottom:2px dashed var(--light);padding:.8rem 1.2rem;position:sticky;top:0;z-index:5}
+    .tab{display:flex;gap:.4rem;flex-wrap:wrap;max-width:1100px;margin:1rem auto 0;padding:0 1rem}
+    .tab button{background:#fff;border:1.5px solid var(--soft);color:var(--dark);border-radius:99px;padding:.5rem 1.1rem;font-weight:700;cursor:pointer}
+    .tab button.aktif{background:var(--dusty);border-color:var(--dusty);color:#fff}
+    .isi{max-width:1100px;margin:0 auto;padding:1rem 1rem 4rem}
+    .petunjuk{background:var(--paper);border:1.5px dashed var(--light);border-radius:14px;padding:.8rem 1rem;font-size:.88rem;margin-bottom:1.2rem}
+    .bar-aksi{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.2rem}
+    .kartu{background:var(--paper);border:2px solid var(--soft);border-radius:18px;padding:1rem}
+    .kartu h3{font-size:1.05rem;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+    .label-kat{font-size:.72rem;background:var(--soft);padding:.1rem .6rem;border-radius:99px;color:var(--dusty);white-space:nowrap}
+    .label-kat.mati{background:#f3e0de;color:var(--bahaya)}
+    .foto{border-radius:12px;overflow:hidden;background:var(--soft);border:1px solid var(--soft);margin-top:.7rem;display:grid;place-items:center;font-size:.8rem;text-align:center;padding:.5rem;width:100%}
+    .foto img,.foto canvas{width:100%;height:100%;object-fit:cover;display:block;margin:-.5rem}
+    .foto:has(img),.foto:has(canvas){padding:0}
+    .foto img,.foto canvas{margin:0}
+    .kecil .foto{max-width:150px}
+    .geser{margin-top:.5rem}.geser input{width:100%}
+    .baris{display:flex;gap:.6rem}.baris>div{flex:1}
+    .cek{display:flex;align-items:center;gap:.5rem;margin-top:.8rem;font-size:.88rem;font-weight:600}
+    .aksi{margin-top:1rem;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+    .status{font-size:.82rem}.status.ok{color:var(--ok)}.status.err{color:var(--bahaya)}
+    small{color:#7a6b8a}
+    .wrap-baris{display:flex;gap:1rem;flex-wrap:wrap}
+    .wrap-baris .kecil{flex:0 0 150px}.wrap-baris .detail{flex:1;min-width:220px}
+    .kosong{padding:2rem;text-align:center;color:#7a6b8a;grid-column:1/-1}
+    #toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);background:var(--deep);color:#fff;padding:.6rem 1.2rem;border-radius:99px;font-size:.9rem;z-index:20;opacity:0;pointer-events:none;transition:opacity .25s}
+    #toast.tampil{opacity:1}
+  </style>
+</head>
+<body>
+
+<section id="login">
+  <div class="kartu-login">
+    <h1>Admin Amerthry Craft</h1>
+    <p style="margin:.2rem 0 1rem;font-size:.9rem">Masuk untuk mengelola website.</p>
+    <label for="email">Email</label>
+    <input type="email" id="email" autocomplete="username">
+    <label for="sandi">Kata sandi</label>
+    <input type="password" id="sandi" autocomplete="current-password">
+    <p id="pesan" class="pesan" role="alert"></p>
+    <button id="btn-masuk" class="btn" style="width:100%;margin-top:.6rem" type="button">Masuk</button>
+  </div>
+</section>
+
+<section id="panel" class="sembunyi">
+  <header class="atas">
+    <div><h2>Kelola website</h2><small id="info-akun"></small></div>
+    <div style="display:flex;gap:.6rem">
+      <a class="btn garis" href="/" target="_blank" style="text-decoration:none">Lihat website</a>
+      <button id="btn-keluar" class="btn garis" type="button">Keluar</button>
+    </div>
+  </header>
+
+  <nav class="tab">
+    <button class="aktif" data-tab="produk" type="button">Produk</button>
+    <button data-tab="wrapping" type="button">Pilihan wrapping</button>
+    <button data-tab="hero" type="button">Foto hero</button>
+  </nav>
+
+  <main class="isi">
+    <!-- PRODUK -->
+    <div id="tab-produk">
+      <div class="petunjuk"><b>Produk:</b> tambah sebanyak yang kamu mau, di kategori mana pun. Foto otomatis dipotong rasio <b>4:3</b> dan dikompres. Klik <b>Simpan</b> di tiap kartu agar tampil di website. "Urutan" yang kecil tampil lebih dulu.</div>
+      <div class="bar-aksi"><h2>Daftar produk</h2><button class="btn" id="tambah-produk" type="button">+ Tambah produk</button></div>
+      <div id="daftar-produk" class="grid"></div>
+    </div>
+
+    <!-- WRAPPING -->
+    <div id="tab-wrapping" class="sembunyi">
+      <div class="petunjuk"><b>Pilihan wrapping:</b> ini yang muncul sebagai chip warna di Custom Order. Pilih warna, atau unggah foto tekstur (misalnya kertas koran) agar yang tampil fotonya.</div>
+      <div class="bar-aksi"><h2>Daftar wrapping</h2><button class="btn" id="tambah-wrap" type="button">+ Tambah pilihan</button></div>
+      <div id="daftar-wrap" class="grid"></div>
+    </div>
+
+    <!-- HERO -->
+    <div id="tab-hero" class="sembunyi">
+      <div class="petunjuk"><b>Foto hero:</b> foto besar di halaman pertama (Freshly Crafted). Foto otomatis dipotong rasio <b>4:5</b> (tegak).</div>
+      <div id="area-hero" style="max-width:420px"></div>
+    </div>
+  </main>
+</section>
+
+<div id="toast" role="status"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = "https://prvnhdncscdfyhmtrwqj.supabase.co";
+const SUPABASE_KEY = "sb_publishable_H4qdLfdVVg_UyU1GWFNSuA_A49qSmPU";
+const BUCKET = "foto-produk";
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const KATEGORI = [
+  { id: "big", nama: "Big Bouquet" },
+  { id: "medium", nama: "Medium Bouquet" },
+  { id: "single", nama: "Single Bouquet" },
+  { id: "loveboard", nama: "Love Board" },
+  { id: "custom", nama: "Custom Bouquet" }
+];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+let produk = [], wrappers = [], pengaturan = {};
+const fotoState = {};
+let seq = 0;
+
+function toast(teks) {
+  const t = $("toast"); t.textContent = teks; t.classList.add("tampil");
+  setTimeout(() => t.classList.remove("tampil"), 2200);
+}
+function setStatus(uid, teks, galat) {
+  const el = $("status-" + uid); if (!el) return;
+  el.textContent = teks; el.className = "status" + (galat ? " err" : "");
+}
+function pesanError(err) {
+  const m = (err && err.message) || String(err);
+  if (err && err.code === "23505") return "Kategori ini masih dibatasi satu produk. Jalankan lepas-batas-kategori.sql di Supabase.";
+  if (err && err.code === "42P01") return "Tabel belum dibuat. Jalankan tambah-pengaturan.sql di Supabase.";
+  if (/row-level security/i.test(m)) return "Ditolak: email login tidak sama dengan email admin di aturan SQL.";
+  return "Gagal: " + m;
+}
+
+/* ================= LOGIN ================= */
+async function cekSesi() {
+  const { data } = await db.auth.getSession();
+  if (data.session) tampilPanel(data.session.user);
+}
+$("btn-masuk").onclick = async () => {
+  $("pesan").textContent = "";
+  const { data, error } = await db.auth.signInWithPassword({ email: $("email").value.trim(), password: $("sandi").value });
+  if (error) { $("pesan").textContent = "Email atau kata sandi salah."; return; }
+  $("sandi").value = "";
+  tampilPanel(data.user);
+};
+$("sandi").addEventListener("keydown", e => { if (e.key === "Enter") $("btn-masuk").click(); });
+$("btn-keluar").onclick = async () => { await db.auth.signOut(); location.reload(); };
+
+async function tampilPanel(user) {
+  $("login").classList.add("sembunyi");
+  $("panel").classList.remove("sembunyi");
+  $("info-akun").textContent = "Masuk sebagai " + user.email;
+  await Promise.all([muatProduk(), muatWrap(), muatHero()]);
+}
+
+/* ================= TAB ================= */
+document.querySelectorAll(".tab button").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tab button").forEach(x => x.classList.toggle("aktif", x === b));
+  ["produk", "wrapping", "hero"].forEach(n => $("tab-" + n).classList.toggle("sembunyi", n !== b.dataset.tab));
+});
+
+/* ================= FOTO: potong & unggah ================= */
+function htmlFoto(uid, url, w, h, label) {
+  return `
+    <div class="foto" id="foto-${uid}" style="aspect-ratio:${w}/${h}">${url ? `<img src="${esc(url)}" alt="">` : "Belum ada foto"}</div>
+    <div class="geser sembunyi" id="geser-${uid}">
+      <small>Geser posisi potong</small>
+      <input type="range" min="0" max="100" value="50" data-aksi="geser" data-uid="${uid}">
+    </div>
+    <label>${label || "Ganti foto"}</label>
+    <input type="file" accept="image/*" data-aksi="pilih" data-uid="${uid}" data-w="${w}" data-h="${h}">`;
+}
+function gambar(uid) {
+  const f = fotoState[uid], ctx = f.canvas.getContext("2d");
+  const iw = f.img.naturalWidth, ih = f.img.naturalHeight;
+  const skala = Math.max(f.w / iw, f.h / ih);
+  const sw = f.w / skala, sh = f.h / skala;
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, f.w, f.h);
+  ctx.drawImage(f.img, (iw - sw) * f.pos / 100, (ih - sh) * f.pos / 100, sw, sh, 0, 0, f.w, f.h);
+}
+document.addEventListener("change", e => {
+  const el = e.target; if (el.dataset.aksi !== "pilih") return;
+  const uid = el.dataset.uid, w = +el.dataset.w, h = +el.dataset.h, file = el.files[0];
+  if (!file) return;
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h;
+    fotoState[uid] = { img, canvas, pos: 50, w, h };
+    gambar(uid);
+    const k = $("foto-" + uid); k.innerHTML = ""; k.appendChild(canvas);
+    $("geser-" + uid).classList.remove("sembunyi");
+    const g = document.querySelector(`[data-aksi=geser][data-uid="${uid}"]`); if (g) g.value = 50;
+  };
+  img.onerror = () => setStatus(uid, "File bukan gambar yang valid.", true);
+  img.src = URL.createObjectURL(file);
+});
+document.addEventListener("input", e => {
+  if (e.target.dataset.aksi !== "geser") return;
+  const f = fotoState[e.target.dataset.uid]; if (!f) return;
+  f.pos = Number(e.target.value); gambar(e.target.dataset.uid);
+});
+async function hapusFile(url) {
+  const tanda = `/${BUCKET}/`;
+  if (url && url.includes(tanda)) {
+    try { await db.storage.from(BUCKET).remove([decodeURIComponent(url.split(tanda)[1])]); } catch (e) {}
+  }
+}
+async function unggahFoto(uid, awalan, urlLama) {
+  const f = fotoState[uid];
+  if (!f) return urlLama || null;
+  const blob = await new Promise(r => f.canvas.toBlob(r, "image/jpeg", 0.85));
+  const path = `${awalan}-${Date.now()}.jpg`;
+  const up = await db.storage.from(BUCKET).upload(path, blob, { contentType: "image/jpeg", cacheControl: "31536000" });
+  if (up.error) throw up.error;
+  const url = db.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+  await hapusFile(urlLama);
+  delete fotoState[uid];
+  return url;
+}
+const nilai = (kartu, n) => { const el = kartu.querySelector(`[data-f=${n}]`); return el.type === "checkbox" ? el.checked : el.value.trim(); };
+
+/* ================= PRODUK ================= */
+async function muatProduk() {
+  const { data, error } = await db.from("products").select("*").order("sort_order").order("id");
+  if (error) { $("daftar-produk").innerHTML = `<p class="kosong">${esc(pesanError(error))}</p>`; return; }
+  produk = data || [];
+  $("daftar-produk").innerHTML = produk.length
+    ? produk.map(p => kartuProduk(p, "p" + p.id)).join("")
+    : '<p class="kosong">Belum ada produk. Klik "+ Tambah produk".</p>';
+}
+function kartuProduk(p, uid) {
+  const baru = !p.id;
+  const kat = KATEGORI.find(k => k.id === p.category);
+  return `
+  <article class="kartu" data-uid="${uid}" data-id="${p.id || ""}">
+    <h3>${baru ? "Produk baru" : esc(p.title)}
+      <span class="label-kat ${p.is_active === false ? "mati" : ""}">${p.is_active === false ? "disembunyikan" : esc(kat ? kat.nama : "")}</span></h3>
+    ${htmlFoto(uid, p.image_url, 1200, 900)}
+    <label>Kategori</label>
+    <select data-f="category">${KATEGORI.map(k => `<option value="${k.id}" ${p.category === k.id ? "selected" : ""}>${k.nama}</option>`).join("")}</select>
+    <label>Judul</label><input type="text" data-f="title" value="${esc(p.title)}">
+    <label>Isi bouquet</label><input type="text" data-f="composition" value="${esc(p.composition)}">
+    <label>Deskripsi</label><textarea rows="3" data-f="description">${esc(p.description)}</textarea>
+    <div class="baris">
+      <div><label>Harga mulai (Rp)</label><input type="number" min="0" step="500" data-f="price" value="${p.price ?? ""}" placeholder="kosong = hubungi"></div>
+      <div><label>Label (badge)</label><input type="text" data-f="badge" value="${esc(p.badge)}"></div>
+    </div>
+    <div class="baris">
+      <div><label>Urutan</label><input type="number" data-f="sort_order" value="${p.sort_order ?? (produk.length + 1)}"></div>
+    </div>
+    <label class="cek"><input type="checkbox" data-f="is_active" ${p.is_active === false ? "" : "checked"}> Tampilkan di website</label>
+    <div class="aksi">
+      <button class="btn" type="button" data-aksi="simpan-produk">Simpan</button>
+      ${baru ? "" : '<button class="btn bahaya" type="button" data-aksi="hapus-produk">Hapus</button>'}
+      <span class="status" id="status-${uid}"></span>
+    </div>
+  </article>`;
+}
+$("tambah-produk").onclick = () => {
+  const uid = "pn" + (++seq);
+  const kosong = $("daftar-produk").querySelector(".kosong"); if (kosong) kosong.remove();
+  $("daftar-produk").insertAdjacentHTML("afterbegin", kartuProduk({}, uid));
+  $("daftar-produk").firstElementChild.scrollIntoView({ behavior: "smooth", block: "center" });
+};
+async function simpanProduk(kartu) {
+  const uid = kartu.dataset.uid, id = kartu.dataset.id;
+  const judul = nilai(kartu, "title");
+  if (!judul) return setStatus(uid, "Judul wajib diisi.", true);
+  setStatus(uid, "Menyimpan...");
+  const lama = id ? produk.find(x => String(x.id) === id) : null;
+  const kat = nilai(kartu, "category");
+  const harga = nilai(kartu, "price");
+  const payload = {
+    category: kat, title: judul,
+    composition: nilai(kartu, "composition") || null,
+    description: nilai(kartu, "description") || null,
+    price: harga === "" ? null : parseInt(harga, 10),
+    badge: nilai(kartu, "badge") || null,
+    is_active: nilai(kartu, "is_active"),
+    sort_order: parseInt(nilai(kartu, "sort_order"), 10) || 0,
+    image_url: await unggahFoto(uid, kat, lama && lama.image_url)
+  };
+  const res = id ? await db.from("products").update(payload).eq("id", id) : await db.from("products").insert(payload);
+  if (res.error) throw res.error;
+  toast("Produk tersimpan ✓");
+  await muatProduk();
+}
+async function hapusProduk(kartu) {
+  const id = kartu.dataset.id, lama = produk.find(x => String(x.id) === id);
+  if (!confirm(`Hapus produk "${lama ? lama.title : ""}"? Tindakan ini tidak bisa dibatalkan.`)) return;
+  const { error } = await db.from("products").delete().eq("id", id);
+  if (error) throw error;
+  await hapusFile(lama && lama.image_url);
+  toast("Produk dihapus");
+  await muatProduk();
+}
+
+/* ================= WRAPPING ================= */
+async function muatWrap() {
+  const { data, error } = await db.from("wrappers").select("*").order("sort_order").order("id");
+  if (error) { $("daftar-wrap").innerHTML = `<p class="kosong">${esc(pesanError(error))}</p>`; return; }
+  wrappers = data || [];
+  $("daftar-wrap").innerHTML = wrappers.length
+    ? wrappers.map(w => kartuWrap(w, "w" + w.id)).join("")
+    : '<p class="kosong">Belum ada pilihan. Klik "+ Tambah pilihan".</p>';
+}
+function kartuWrap(w, uid) {
+  const baru = !w.id;
+  return `
+  <article class="kartu" data-uid="${uid}" data-id="${w.id || ""}">
+    <h3>${baru ? "Pilihan baru" : esc(w.name)}
+      <span class="label-kat ${w.is_active === false ? "mati" : ""}">${w.is_active === false ? "disembunyikan" : "aktif"}</span></h3>
+    <div class="wrap-baris">
+      <div class="kecil">${htmlFoto(uid, w.image_url, 400, 400, "Foto tekstur (opsional)")}</div>
+      <div class="detail">
+        <label>Nama</label><input type="text" data-f="name" value="${esc(w.name)}" placeholder="mis. Kertas Koran">
+        <label>Warna</label><input type="color" data-f="color" value="${esc(w.color || "#FFFFFF")}">
+        <div class="baris"><div><label>Urutan</label><input type="number" data-f="sort_order" value="${w.sort_order ?? (wrappers.length + 1)}"></div></div>
+        <label class="cek"><input type="checkbox" data-f="is_active" ${w.is_active === false ? "" : "checked"}> Tampilkan di website</label>
+      </div>
+    </div>
+    <div class="aksi">
+      <button class="btn" type="button" data-aksi="simpan-wrap">Simpan</button>
+      ${baru ? "" : '<button class="btn bahaya" type="button" data-aksi="hapus-wrap">Hapus</button>'}
+      <span class="status" id="status-${uid}"></span>
+    </div>
+  </article>`;
+}
+$("tambah-wrap").onclick = () => {
+  const uid = "wn" + (++seq);
+  const kosong = $("daftar-wrap").querySelector(".kosong"); if (kosong) kosong.remove();
+  $("daftar-wrap").insertAdjacentHTML("afterbegin", kartuWrap({}, uid));
+  $("daftar-wrap").firstElementChild.scrollIntoView({ behavior: "smooth", block: "center" });
+};
+async function simpanWrap(kartu) {
+  const uid = kartu.dataset.uid, id = kartu.dataset.id;
+  const nama = nilai(kartu, "name");
+  if (!nama) return setStatus(uid, "Nama wajib diisi.", true);
+  setStatus(uid, "Menyimpan...");
+  const lama = id ? wrappers.find(x => String(x.id) === id) : null;
+  const payload = {
+    name: nama, color: nilai(kartu, "color"),
+    is_active: nilai(kartu, "is_active"),
+    sort_order: parseInt(nilai(kartu, "sort_order"), 10) || 0,
+    image_url: await unggahFoto(uid, "wrap", lama && lama.image_url)
+  };
+  const res = id ? await db.from("wrappers").update(payload).eq("id", id) : await db.from("wrappers").insert(payload);
+  if (res.error) throw res.error;
+  toast("Pilihan wrapping tersimpan ✓");
+  await muatWrap();
+}
+async function hapusWrap(kartu) {
+  const id = kartu.dataset.id, lama = wrappers.find(x => String(x.id) === id);
+  if (!confirm(`Hapus pilihan "${lama ? lama.name : ""}"?`)) return;
+  const { error } = await db.from("wrappers").delete().eq("id", id);
+  if (error) throw error;
+  await hapusFile(lama && lama.image_url);
+  toast("Pilihan dihapus");
+  await muatWrap();
+}
+
+/* ================= HERO ================= */
+async function muatHero() {
+  const { data, error } = await db.from("site_settings").select("*");
+  if (error) { $("area-hero").innerHTML = `<p class="kosong">${esc(pesanError(error))}</p>`; return; }
+  pengaturan = {};
+  (data || []).forEach(r => (pengaturan[r.key] = r.value));
+  $("area-hero").innerHTML = `
+  <article class="kartu" data-uid="hero">
+    <h3>Foto hero <span class="label-kat">4:5 tegak</span></h3>
+    ${htmlFoto("hero", pengaturan.hero_image, 1000, 1250)}
+    <label>Tulisan di bawah foto</label>
+    <input type="text" data-f="caption" value="${esc(pengaturan.hero_caption)}" placeholder="Big Size Pipe Cleaner Flower Bouquet">
+    <div class="aksi">
+      <button class="btn" type="button" data-aksi="simpan-hero">Simpan</button>
+      <span class="status" id="status-hero"></span>
+    </div>
+  </article>`;
+}
+async function simpanHero(kartu) {
+  setStatus("hero", "Menyimpan...");
+  const url = await unggahFoto("hero", "hero", pengaturan.hero_image);
+  const baris = [{ key: "hero_caption", value: nilai(kartu, "caption") }];
+  if (url) baris.push({ key: "hero_image", value: url });
+  const { error } = await db.from("site_settings").upsert(baris, { onConflict: "key" });
+  if (error) throw error;
+  toast("Foto hero tersimpan ✓");
+  await muatHero();
+}
+
+/* ================= TOMBOL ================= */
+const AKSI = { "simpan-produk": simpanProduk, "hapus-produk": hapusProduk, "simpan-wrap": simpanWrap, "hapus-wrap": hapusWrap, "simpan-hero": simpanHero };
+document.addEventListener("click", async e => {
+  const btn = e.target.closest("button[data-aksi]");
+  if (!btn || !AKSI[btn.dataset.aksi]) return;
+  const kartu = btn.closest(".kartu");
+  btn.disabled = true;
+  try { await AKSI[btn.dataset.aksi](kartu); }
+  catch (err) { setStatus(kartu.dataset.uid, pesanError(err), true); }
+  btn.disabled = false;
+});
+
+cekSesi();
+</script>
+</body>
+</html>
