@@ -278,6 +278,50 @@
     }
   }
 
+  /* ---------- Testimoni (bukti chat / Love Notes) ---------- */
+  function bukaZoom(src) {
+    const o = document.createElement("div");
+    o.style.cssText = "position:fixed;inset:0;z-index:100;background:rgba(53,39,69,.85);display:flex;align-items:center;justify-content:center;padding:1rem;cursor:zoom-out";
+    o.innerHTML = '<img src="' + esc(src) + '" alt="" style="max-width:100%;max-height:100%;border-radius:12px;background:#fff">';
+    const tutup = e => { if (e.type === "click" || e.key === "Escape") { o.remove(); document.removeEventListener("keydown", tutup); } };
+    o.addEventListener("click", tutup);
+    document.addEventListener("keydown", tutup);
+    document.body.appendChild(o);
+  }
+
+  function renderTestimoni(rows) {
+    const bagian = document.getElementById("testimonials");
+    const grid = document.querySelector("#testimonials .grid");
+    if (!bagian || !grid) return;
+    if (!rows.length) { bagian.style.display = "none"; return; } // tidak ada -> bagian disembunyikan
+
+    const miring = ["rotate-[-1.5deg]", "rotate-[2deg]", "rotate-[-1deg]"];
+    const lakban = [
+      '<div class="washi-tape absolute -top-3 left-6 w-24 h-6 rotate-[-5deg]"></div>',
+      '<div class="washi-tape-cream absolute -top-3 right-6 w-24 h-6 rotate-[8deg]"></div>',
+      '<div class="washi-tape absolute -top-3 left-1/3 w-24 h-6 rotate-[2deg]"></div>'
+    ];
+    grid.className = "columns-1 sm:columns-2 gap-6 " + (rows.length === 4 ? "lg:columns-4" : "lg:columns-3");
+    grid.innerHTML = rows.map((r, i) => {
+      const bintang = r.content ? '<div class="flex text-amber-400 text-xs gap-1 mb-2">' + "★".repeat(Math.min(5, Math.max(1, r.rating || 5))) + "</div>" : "";
+      const teks = r.content ? '<p class="font-hand text-xl text-lavender-dark leading-snug">"' + esc(r.content) + '"</p>' : "";
+      const kaki = (r.name || r.tag) ? `
+        <div class="mt-3 pt-3 border-t border-dashed border-lavender-soft flex justify-between items-center gap-2">
+          <span class="font-bold text-xs text-lavender-deep">${r.name ? "— " + esc(r.name) : ""}</span>
+          ${r.tag ? '<span class="text-[10px] bg-lavender-pale px-2 py-0.5 rounded-md text-sage-dark font-bold">' + esc(r.tag) + "</span>" : ""}
+        </div>` : "";
+      return `
+      <div class="break-inside-avoid mb-8 ${i % 2 ? "bg-cream-ivory" : "bg-cream-paper"} p-4 rounded-2xl border border-lavender-soft shadow-md relative transform ${miring[i % 3]} hover:rotate-0 hover:-translate-y-2 transition-all duration-300">
+        ${lakban[i % 3]}
+        ${r.image_url ? `<img data-zoom src="${esc(r.image_url)}" alt="Bukti chat pelanggan" loading="lazy" style="width:100%;height:auto;display:block;border-radius:12px;margin-bottom:.6rem;cursor:zoom-in">` : ""}
+        ${bintang}${teks}${kaki}
+      </div>`;
+    }).join("");
+
+    grid.onclick = e => { const im = e.target.closest("img[data-zoom]"); if (im) bukaZoom(im.src); };
+    bagian.style.display = "";
+  }
+
   /* ---------- Mulai ---------- */
   function renderSemua() {
     renderProducts();
@@ -287,15 +331,20 @@
   }
 
   PRODUK = dariBawaan();
+  const bagianTesti = document.getElementById("testimonials");
+  if (bagianTesti) bagianTesti.style.display = "none";
   pasangTombolWA();
   renderWrapperOptions();
 
   (async function () {
-    const [prod, wrap, atur] = await Promise.all([
+    const [prod, wrap, atur, testi] = await Promise.all([
       ambil("products?select=*&is_active=eq.true&order=sort_order.asc,id.asc"),
       ambil("wrappers?select=*&is_active=eq.true&order=sort_order.asc,id.asc"),
-      ambil("site_settings?select=*")
+      ambil("site_settings?select=*"),
+      ambil("testimonials?select=*&is_active=eq.true&order=sort_order.asc,id.asc")
     ]);
+
+    if (Array.isArray(testi)) renderTestimoni(testi);
 
     if (Array.isArray(prod) && prod.length) {
       // foto lama dari GitHub dipakai untuk produk pertama tiap kategori yang belum punya foto
