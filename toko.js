@@ -80,7 +80,7 @@
           <div class="washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 rotate-[-1deg]"></div>
           <div class="sticker-price absolute top-2 right-2 bg-lavender text-lavender-deep border border-white font-hand font-bold text-sm px-3 py-1 rounded-xl shadow-xs z-10 transition-transform">${esc(p.priceLabel)}</div>
           ${p.badge ? `<span class="absolute top-3 left-3 bg-cream-ivory border border-lavender-soft text-sage-dark text-[10px] font-bold px-2 py-0.5 rounded-md z-10">✦ ${esc(p.badge)}</span>` : ""}
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-b from-lavender-pale/80 to-cream-ivory border border-lavender-soft flex items-center justify-center my-2">
+          <div class="aspect-[4/5] rounded-2xl overflow-hidden bg-gradient-to-b from-lavender-pale/80 to-cream-ivory border border-lavender-soft flex items-center justify-center my-2">
             ${p.image ? `<img data-foto src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" class="w-full h-full object-cover">` : generateProductSVG()}
           </div>
           <h3 class="font-display font-bold text-lg text-lavender-deep mt-2 leading-tight">${esc(p.title)}</h3>
@@ -187,7 +187,7 @@
       foto = document.createElement("img");
       foto.id = "preview-photo";
       foto.alt = "";
-      foto.style.cssText = "width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;display:none;margin-bottom:.5rem";
+      foto.style.cssText = "width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:12px;display:none;margin-bottom:.5rem";
       ikon.parentNode.insertBefore(foto, ikon);
     }
     if (foto && ikon) {
