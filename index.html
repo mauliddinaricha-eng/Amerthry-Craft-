@@ -665,6 +665,34 @@ body {
             </div>
         </div>
     </section>
+    
+    <section id="videos" class="py-16 px-4 relative">
+        <div class="max-w-6xl mx-auto">
+
+            <div class="text-center mb-10 space-y-2">
+                <span class="font-hand text-2xl text-sage-dark font-bold">~ Watch Us Create ~</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold text-lavender-deep">
+                    Our Videos 🎬
+                </h2>
+                <p class="font-hand text-2xl text-lavender-dusty">Lihat proses dan hasil bouquet kami ♡</p>
+            </div>
+
+            <div id="wrap-tiktok" class="mb-12">
+                <h3 class="font-display font-bold text-xl text-lavender-deep text-center mb-5">
+                    <i class="fa-brands fa-tiktok"></i> TikTok
+                </h3>
+                <div id="video-tiktok" class="flex flex-wrap justify-center gap-8"></div>
+            </div>
+
+            <div id="wrap-instagram">
+                <h3 class="font-display font-bold text-xl text-lavender-deep text-center mb-5">
+                    <i class="fa-brands fa-instagram"></i> Instagram
+                </h3>
+                <div id="video-instagram" class="flex flex-wrap justify-center gap-8"></div>
+            </div>
+
+        </div>
+    </section>
         <section id="social" class="py-16 px-4 relative">
         <div class="max-w-5xl mx-auto">
 
@@ -1158,5 +1186,66 @@ window.onload = function() {
 
     </script>
     <script src="toko.js"></script>
+        <script>
+    // ====== LINK VIDEO (tambah baris baru di dalam [ ] untuk video berikutnya) ======
+    const VIDEO_TIKTOK = [
+        "https://www.tiktok.com/@amerthry.craft_/video/7697783842723138817",
+    ];
+    const VIDEO_INSTAGRAM = [
+        "https://www.instagram.com/reel/DfHZe-xoQeu/",
+    ];
+    // ================================================================================
+
+    (function () {
+        const bagian = document.getElementById('videos');
+        if (!bagian) return;
+        if (!VIDEO_TIKTOK.length && !VIDEO_INSTAGRAM.length) { bagian.style.display = 'none'; return; }
+
+        function bungkus(isi) {
+            const d = document.createElement('div');
+            d.className = 'bg-cream-paper p-3 rounded-2xl border-2 border-lavender-soft shadow-md relative';
+            d.innerHTML = '<div class="washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-5 rotate-[-2deg] z-10"></div>';
+            d.appendChild(isi);
+            return d;
+        }
+        function muatSkrip(src) {
+            const s = document.createElement('script');
+            s.async = true; s.src = src;
+            document.body.appendChild(s);
+        }
+
+        const tt = document.getElementById('video-tiktok');
+        let adaTikTok = false;
+        VIDEO_TIKTOK.forEach(function (url) {
+            const m = url.match(/video\/(\d+)/);
+            if (!m) return;
+            const bq = document.createElement('blockquote');
+            bq.className = 'tiktok-embed';
+            bq.setAttribute('cite', url);
+            bq.setAttribute('data-video-id', m[1]);
+            bq.style.cssText = 'max-width:325px;min-width:325px;margin:0';
+            bq.innerHTML = '<section></section>';
+            tt.appendChild(bungkus(bq));
+            adaTikTok = true;
+        });
+        if (adaTikTok) muatSkrip('https://www.tiktok.com/embed.js');
+        else document.getElementById('wrap-tiktok').style.display = 'none';
+
+        const ig = document.getElementById('video-instagram');
+        let adaIG = false;
+        VIDEO_INSTAGRAM.forEach(function (url) {
+            const bq = document.createElement('blockquote');
+            bq.className = 'instagram-media';
+            bq.setAttribute('data-instgrm-permalink', url);
+            bq.setAttribute('data-instgrm-version', '14');
+            bq.style.cssText = 'max-width:400px;min-width:300px;width:100%;margin:0;background:#fff;border:0';
+            bq.innerHTML = '<a href="' + url + '" target="_blank" rel="noopener noreferrer">Lihat di Instagram</a>';
+            ig.appendChild(bungkus(bq));
+            adaIG = true;
+        });
+        if (adaIG) muatSkrip('https://www.instagram.com/embed.js');
+        else document.getElementById('wrap-instagram').style.display = 'none';
+    })();
+    </script>
 </body>
 </html>
